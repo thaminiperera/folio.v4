@@ -1,0 +1,34 @@
+---
+title: Interpreter
+tagline: A BASIC-inspired language with a lexer, parser, and runtime — then a small web bench so you can run it.
+summary: Modular interpreter in Python (tokens, AST, visitor runtime, errors with arrows) plus a FastAPI and React runner.
+stack:
+  - Python
+  - FastAPI
+  - React
+github: https://github.com/thaminiperera/interpreter
+demo: https://tdp-interpreter.netlify.app/
+order: 3
+---
+
+## Problem
+
+I wanted to understand languages from the inside: how a line of text becomes tokens, a tree, then something that runs — and how to tell a person exactly where it broke.
+
+## What I built
+
+The interpreter is a classic pipeline.
+
+**Lexer.** Characters become tokens (numbers, strings, keywords like `VAR`, `IF`, `FOR`). A position object tracks line and column. Illegal characters fail early. Comments and whitespace drop out of the stream.
+
+**Parser.** Recursive descent builds an AST. Expressions, statements, and loops each have their own functions. Syntax mistakes become `ExpectedCharError` or `InvalidSyntaxError` before anything executes.
+
+**Runtime.** A visitor walks the tree. A symbol table and nested contexts handle scope. Values share a base type so arithmetic and comparison stay uniform. `if`, `for`, `while`, functions, `return` / `continue` / `break` are first-class. Built-ins (`print`, `input`, type checks) sit on the same function base as user-defined ones.
+
+**Errors.** Tracebacks print the line, a column, and a small arrow under the trouble. Runtime faults (zero division, missing names) surface as `RTError`.
+
+The bench is a FastAPI service (file upload or posted source) and a React page with a textarea. CORS is explicit. The interesting part is still the language, not the chrome.
+
+## Stack
+
+Python for the interpreter. FastAPI for execution. React for the bench.

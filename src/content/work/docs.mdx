@@ -1,0 +1,32 @@
+---
+title: Docs
+tagline: A calm, real-time document editor so people can write together without fighting the tool.
+summary: Collaborative document editing with live cursors, templates, and access control — a modern alternative to Google Docs, built for latency and clarity.
+stack:
+  - Next.js
+  - Convex
+  - Clerk
+  - Tiptap
+  - Liveblocks
+  - Vercel
+github: https://github.com/thaminiperera/docs
+demo: https://docs-five-orpin.vercel.app/
+order: 1
+---
+
+## Problem
+
+Teams still reach for document tools that feel heavy, or that stall when more than one person is typing. I wanted a small, serious editor: shared presence, real formatting, and login that does not get in the way.
+
+## What I built
+
+Docs is a full-stack editor. Several people can work in the same file with live cursors and synchronized changes. Tiptap covers structure (headings, tables, task lists, images). Liveblocks tracks presence. Convex holds the document graph. Clerk handles accounts and org-level access. There is a short library of templates so a blank page is optional.
+
+The work was in wiring those pieces so the page stays responsive while the room stays consistent — not in inventing a new word processor.
+
+## Stack
+
+- **Frontend:** Next.js, Tailwind CSS, shadcn/ui
+- **Data:** Convex
+- **Collaboration:** Liveblocks
+- **Auth:** Clerk

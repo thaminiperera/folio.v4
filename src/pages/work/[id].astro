@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from "astro:content";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+  return projects.map((project, index) => ({
+    params: { id: project.id },
+    props: {
+      project,
+      next: projects[(index + 1) % projects.length],
+    },
+  }));
+}
+
+const { project, next } = Astro.props;
+const { Content } = await render(project);
+---
+
+<Base title={project.data.title} description={project.data.summary}>
+  <Header />
+  <main id="main" class="mx-auto max-w-5xl px-6 pb-8 pt-16 md:px-10 md:pt-24">
+    <p class="small-caps text-sm text-ink-soft">
+      <a class="hover:text-accent" href="/#work">Work</a>
+      <span aria-hidden="true"> / </span>
+      {project.data.title}
+    </p>
+    <h1 class="font-display mt-6 max-w-[18ch] text-4xl leading-[1.15] text-ink md:text-6xl">
+      {project.data.title}
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
+      {project.data.summary}
+    </p>
+    <p class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+      <a class="text-accent underline-offset-4 hover:underline" href={project.data.github}>
+        GitHub
+      </a>
+      {
+        project.data.demo && (
+          <a class="text-accent underline-offset-4 hover:underline" href={project.data.demo}>
+            Demo
+          </a>
+        )
+      }
+      {
+        project.data.extraLink && (
+          <a class="text-accent underline-offset-4 hover:underline" href={project.data.extraLink.href}>
+            {project.data.extraLink.label}
+          </a>
+        )
+      }
+      <a class="text-ink-soft hover:text-accent" href={`/work/${next.id}`}>
+        Next: {next.data.title}
+      </a>
+    </p>
+    <p class="mt-6 text-sm text-ink-soft">{project.data.stack.join(" · ")}</p>
+
+    <article
+      class="prose-work mt-14 max-w-2xl space-y-5 text-[1.05rem] leading-relaxed text-ink-soft [&_h2]:mt-12 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:text-ink [&_strong]:text-ink [&_p]:max-w-prose"
+    >
+      <Content />
+    </article>
+  </main>
+  <Footer />
+</Base>

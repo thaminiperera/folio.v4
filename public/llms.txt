@@ -1,0 +1,45 @@
+# Thamini Perera
+
+Full-stack software engineer in Colombo.
+
+- Site: https://thaminiperera.netlify.app
+- GitHub: https://github.com/thaminiperera
+- LinkedIn: https://www.linkedin.com/in/thaminiperera/
+- Email: hello@thaminiperera.com (placeholder; replace in src/site.ts)
+
+## Skills
+
+Languages: TypeScript, JavaScript, Python, SQL, Dart
+Web: React, Next.js, Tailwind CSS, Flutter
+Data & APIs: Node.js, tRPC, Drizzle ORM, PostgreSQL, MySQL, Convex
+Auth & realtime: Clerk, Liveblocks, Mux
+Other: FastAPI, OpenCV, Google Maps API, Vercel
+
+## Experience
+
+- Software Engineering Intern, Archnix — doctor portal for DocLocator (React, Node, MySQL, Google Maps). Dates forthcoming.
+- BSc Computer Science, University of Sri Jayewardenepura, Colombo. Dates forthcoming.
+
+## Work
+
+1. Docs — real-time collaborative document editor. Next.js, Convex, Clerk, Tiptap, Liveblocks.
+   https://github.com/thaminiperera/docs
+   https://docs-five-orpin.vercel.app/
+
+2. Cine — video platform for creators and viewers. Next.js, tRPC, Mux, Drizzle, PostgreSQL, Clerk.
+   https://github.com/thaminiperera/cine
+   https://cine-blue.vercel.app/
+
+3. Interpreter — BASIC-inspired language (lexer, parser, runtime) with FastAPI/React bench.
+   https://github.com/thaminiperera/interpreter
+   https://tdp-interpreter.netlify.app/
+
+4. DocLocator — medical booking; internship at Archnix. React, Node, MySQL, Google Maps.
+   https://github.com/thaminiArchnix/DocLocator
+   https://www.archnix.com/
+
+5. Ecomm — React + Material UI storefront (search, filters, cart, auth).
+   https://github.com/thaminiperera/ecomm
+
+6. Footgear — Flutter + Snap AR try-on; Python/OpenCV foot-size from a photo.
+   https://github.com/isurikaudeshini/foot-gear-app

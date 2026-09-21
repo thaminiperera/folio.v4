@@ -1,0 +1,33 @@
+---
+title: Cine
+tagline: A video platform for people who make films and people who watch them — feeds, studio tools, and a player that actually streams.
+summary: Full-stack video product with Mux processing, type-safe APIs, playlists, comments, and creator analytics.
+stack:
+  - Next.js
+  - tRPC
+  - Mux
+  - Drizzle ORM
+  - PostgreSQL
+  - Clerk
+github: https://github.com/thaminiperera/cine
+demo: https://cine-blue.vercel.app/
+order: 2
+---
+
+## Problem
+
+Most “YouTube clones” stop at a file upload. Creators need encoding, thumbnails, metrics, and a home they can return to. Viewers need a player, comments, and something to subscribe to.
+
+## What I built
+
+Cine is a video product on Next.js 15 and React 19. Uploads go through Mux for encoding and adaptive playback. Drizzle and PostgreSQL keep videos, users, playlists, and engagement. tRPC keeps the API typed from route to form. Clerk signs people in.
+
+Around that core: home / trending / subscription feeds, smart thumbnails, a comment thread with replies, likes, and a small creator studio for views and engagement. The interface is one responsive surface, not a desktop leftover.
+
+## Stack
+
+- **Frontend:** Next.js, Tailwind CSS, shadcn/ui
+- **API:** tRPC
+- **Data:** PostgreSQL, Drizzle ORM
+- **Video:** Mux
+- **Auth:** Clerk
