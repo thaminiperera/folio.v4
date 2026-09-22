@@ -10,12 +10,6 @@ const work = defineCollection({
     stack: z.array(z.string()),
     github: z.string().url(),
     demo: z.string().url().optional(),
-    extraLink: z
-      .object({
-        label: z.string(),
-        href: z.string().url(),
-      })
-      .optional(),
     order: z.number(),
   }),
 });

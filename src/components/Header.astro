@@ -4,21 +4,40 @@ import { site } from "../site";
 const path = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-40 border-b border-rule/80 bg-paper/85 backdrop-blur-sm">
-  <div class="mx-auto flex max-w-5xl items-baseline justify-between gap-6 px-6 py-4 md:px-10">
-    <a href="/" class="font-display text-lg tracking-tight text-ink hover:text-accent">
-      {site.name}
+<header class="border-b border-rule">
+  <div class="mx-auto flex max-w-3xl items-baseline justify-between gap-6 px-6 py-5 md:px-8">
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 font-display text-[1.15rem] font-bold tracking-tight text-ink link-fade"
+      aria-label="T.P. home"
+    >
+      <!-- Monochrome laptop mark (currentColor) -->
+      <svg
+        class="icon-mono text-[1.05em]"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="square"
+        stroke-linejoin="miter"
+        aria-hidden="true"
+      >
+        <rect x="3" y="4" width="18" height="12" rx="1"></rect>
+        <path d="M2 20h20"></path>
+        <path d="M8 20h8"></path>
+      </svg>
+      <span>T.P.</span>
     </a>
-    <nav aria-label="Primary" class="flex flex-wrap items-baseline gap-x-5 gap-y-1 text-sm text-ink-soft">
+    <nav aria-label="Primary" class="flex flex-wrap items-baseline gap-x-5 gap-y-1 text-sm">
       <a
         href="/#work"
-        class:list={["hover:text-accent", path.startsWith("/work") && "text-accent"]}
+        class:list={["link-underline", path.startsWith("/work") && "opacity-60"]}
       >
         Work
       </a>
-      <a href={`mailto:${site.email}`} class="hover:text-accent">Email</a>
-      <a href={site.github} rel="me" class="hover:text-accent">GitHub</a>
-      <a href={site.linkedin} rel="me" class="hover:text-accent">LinkedIn</a>
+      <a href="/#experience" class="link-underline">Experience</a>
+      <a href={site.github} rel="me" class="link-underline" target="_blank">GitHub</a>
+      <a href={site.linkedin} rel="me" class="link-underline" target="_blank">LinkedIn</a>
     </nav>
   </div>
 </header>

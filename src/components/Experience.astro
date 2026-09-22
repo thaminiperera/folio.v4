@@ -2,19 +2,23 @@
 import { experience } from "../site";
 ---
 
-<section id="experience" class="mt-24" aria-labelledby="experience-heading">
-  <h2 id="experience-heading" class="small-caps text-sm text-ink-soft">Experience</h2>
-  <ol class="mt-8 space-y-10">
+<section id="experience" class="mt-20" aria-labelledby="experience-heading">
+  <h2 id="experience-heading" class="label">Experience</h2>
+  <ol class="mt-8 space-y-12">
     {
       experience.map((item) => (
-        <li class="grid gap-1 md:grid-cols-[11rem_1fr] md:gap-8">
-          <p class="small-caps text-sm text-ink-soft">{item.dates}</p>
+        <li class="grid gap-2 md:grid-cols-[10.5rem_1fr] md:gap-10">
+          <p class="text-sm text-ink-soft">{item.dates}</p>
           <div>
-            <p class="font-display text-xl text-ink">
+            <h3 class="font-display text-[1.35rem] font-bold leading-snug text-ink">
               {item.role}
-              <span class="text-ink-soft"> · {item.org}</span>
-            </p>
-            <p class="mt-2 max-w-prose leading-relaxed text-ink-soft">{item.detail}</p>
+            </h3>
+            <p class="mt-1 text-ink-soft">{item.org}</p>
+            <ul class="mt-4 list-disc space-y-2 pl-5 text-[0.95rem] leading-relaxed text-ink-soft marker:text-ink">
+              {item.points.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
           </div>
         </li>
       ))

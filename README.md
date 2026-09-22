@@ -1,6 +1,6 @@
 # Thamini Perera — folio.v4
 
-Personal site: parchment, scholarly, recruiter-first. Astro, MDX, Tailwind.
+Personal portfolio. Astro, MDX, Tailwind.
 
 ## Run
 
@@ -9,11 +9,10 @@ npm install
 npm run dev
 ```
 
-Build: `npm run build`. Deploy the `dist` folder (Netlify is already configured).
+Build: `npm run build`. Deploy the `dist` folder (Netlify is configured).
 
 ## Edit
 
-- Identity, email, skills, experience: `src/site.ts`
-- Case studies: `src/content/work/*.mdx`
-
-Email and experience dates are placeholders until you replace them.
+- Identity and experience: `src/site.ts`
+- Project case studies: `src/content/work/*.mdx`
+- Agent-facing summary: `public/llms.txt`

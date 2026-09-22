@@ -21,44 +21,42 @@ const { Content } = await render(project);
 
 <Base title={project.data.title} description={project.data.summary}>
   <Header />
-  <main id="main" class="mx-auto max-w-5xl px-6 pb-8 pt-16 md:px-10 md:pt-24">
-    <p class="small-caps text-sm text-ink-soft">
-      <a class="hover:text-accent" href="/#work">Work</a>
+  <main id="main" class="mx-auto max-w-3xl px-6 pb-8 pt-14 md:px-8 md:pt-20">
+    <p class="label text-ink-soft">
+      <a class="link-underline" href="/#work">Projects</a>
       <span aria-hidden="true"> / </span>
       {project.data.title}
     </p>
-    <h1 class="font-display mt-6 max-w-[18ch] text-4xl leading-[1.15] text-ink md:text-6xl">
+    <h1 class="font-display mt-5 text-[2.25rem] font-bold leading-[1.15] text-ink md:text-[3rem]">
       {project.data.title}
     </h1>
-    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
+    <p class="mt-5 max-w-2xl leading-relaxed text-ink-soft">
       {project.data.summary}
     </p>
-    <p class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-      <a class="text-accent underline-offset-4 hover:underline" href={project.data.github}>
+    <p class="mt-6 text-sm text-ink-soft">{project.data.stack.join(" · ")}</p>
+    <p class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+      <a class="link-underline" href={project.data.github} target="_blank" rel="noopener noreferrer">
         GitHub
       </a>
       {
         project.data.demo && (
-          <a class="text-accent underline-offset-4 hover:underline" href={project.data.demo}>
-            Demo
+          <a
+            class="link-underline"
+            href={project.data.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Live Demo
           </a>
         )
       }
-      {
-        project.data.extraLink && (
-          <a class="text-accent underline-offset-4 hover:underline" href={project.data.extraLink.href}>
-            {project.data.extraLink.label}
-          </a>
-        )
-      }
-      <a class="text-ink-soft hover:text-accent" href={`/work/${next.id}`}>
+      <a class="link-fade text-ink-soft" href={`/work/${next.id}`}>
         Next: {next.data.title}
       </a>
     </p>
-    <p class="mt-6 text-sm text-ink-soft">{project.data.stack.join(" · ")}</p>
 
     <article
-      class="prose-work mt-14 max-w-2xl space-y-5 text-[1.05rem] leading-relaxed text-ink-soft [&_h2]:mt-12 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:text-ink [&_strong]:text-ink [&_p]:max-w-prose"
+      class="prose-work mt-14 max-w-2xl space-y-5 text-[0.98rem] leading-relaxed text-ink-soft [&_h2]:mt-12 [&_h2]:font-display [&_h2]:text-[1.35rem] [&_h2]:font-bold [&_h2]:text-ink [&_strong]:font-medium [&_strong]:text-ink [&_p]:max-w-prose [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5 [&_li]:max-w-prose"
     >
       <Content />
     </article>

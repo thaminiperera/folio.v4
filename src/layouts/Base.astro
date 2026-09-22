@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { title, description = site.description } = Astro.props;
-const pageTitle = title ? `${title} · ${site.name}` : site.name;
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 
 const personLd = {
@@ -16,11 +16,11 @@ const personLd = {
   "@type": "Person",
   name: site.name,
   jobTitle: site.role,
+  description: site.tagline,
   url: site.url,
-  email: `mailto:${site.email}`,
   address: {
     "@type": "PostalAddress",
-    addressLocality: site.location,
+    addressLocality: "Colombo",
     addressCountry: "LK",
   },
   sameAs: [site.github, site.linkedin],
@@ -43,15 +43,15 @@ const personLd = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,560;1,9..144,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&display=swap"
       rel="stylesheet"
     />
     <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
   </head>
-  <body class="antialiased">
+  <body>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-3 focus:py-2"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-3 focus:py-2 focus:outline-none"
     >
       Skip to content
     </a>

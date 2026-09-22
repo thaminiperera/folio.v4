@@ -1,34 +1,42 @@
 ---
-title: Interpreter
-tagline: A BASIC-inspired language with a lexer, parser, and runtime — then a small web bench so you can run it.
-summary: Modular interpreter in Python (tokens, AST, visitor runtime, errors with arrows) plus a FastAPI and React runner.
+title: BASIC-inspired Language Interpreter
+tagline: Hand-written lexer, parser, and tree-walking interpreter in Python
+summary: A small interpreted programming language implemented from scratch in Python — variables, conditionals, loops, first-class functions, lists, strings, and an interactive REPL.
 stack:
-  - Python
-  - FastAPI
-  - React
+  - Python — hand-written lexer, parser, and tree-walking interpreter
 github: https://github.com/thaminiperera/interpreter
 demo: https://tdp-interpreter.netlify.app/
 order: 3
 ---
 
-## Problem
+## Overview
 
-I wanted to understand languages from the inside: how a line of text becomes tokens, a tree, then something that runs — and how to tell a person exactly where it broke.
+This is a small interpreted programming language implemented from scratch in Python, covering variables, conditionals, loops, first-class functions (named, anonymous, recursive), lists, strings, and an interactive REPL. The implementation follows a classic three-stage pipeline: a lexer converts source text into tokens, a parser converts tokens into an abstract syntax tree, and a tree-walking interpreter evaluates that tree directly, without compiling to bytecode.
 
-## What I built
+## Lexer
 
-The interpreter is a classic pipeline.
+A single loop switches on each character, producing tokens for numbers (including decimals), identifiers (checked against a keyword list), and manually-parsed strings with escape sequences. Two-character operators use small lookahead routines — distinguishing `=` from `==`, and `-` from the `->` function-return arrow.
 
-**Lexer.** Characters become tokens (numbers, strings, keywords like `VAR`, `IF`, `FOR`). A position object tracks line and column. Illegal characters fail early. Comments and whitespace drop out of the stream.
+## Parser
 
-**Parser.** Recursive descent builds an AST. Expressions, statements, and loops each have their own functions. Syntax mistakes become `ExpectedCharError` or `InvalidSyntaxError` before anything executes.
+Implemented as hand-written recursive descent, where operator precedence is expressed through the order functions call each other (`expr` → `comp-expr` → `arith-expr` → `term` → `factor` → `power` → `call` → `atom`) rather than a precedence table. A shared helper handles left-associative binary operators generically, reused across addition, comparisons, and logical operators. Exponentiation is implemented as right-associative by recursing back into a lower precedence level, confirmed by testing that `2 ^ 3 ^ 2` evaluates to 512 rather than 64.
 
-**Runtime.** A visitor walks the tree. A symbol table and nested contexts handle scope. Values share a base type so arithmetic and comparison stay uniform. `if`, `for`, `while`, functions, `return` / `continue` / `break` are first-class. Built-ins (`print`, `input`, type checks) sit on the same function base as user-defined ones.
+## Design choices
 
-**Errors.** Tracebacks print the line, a column, and a small arrow under the trouble. Runtime faults (zero division, missing names) surface as `RTError`.
+Every construct — including if, loops, and variable assignment — is parsed as an expression that produces a value; a for loop, for instance, returns a list of its per-iteration results unless explicitly suppressed. Errors are returned as values through result-wrapper objects rather than raised as exceptions, allowing every failure to carry its exact source position and be rendered with a caret pointing at the offending token.
 
-The bench is a FastAPI service (file upload or posted source) and a React page with a textarea. CORS is explicit. The interesting part is still the language, not the chrome.
+## Values and operator overloading
 
-## Stack
+Number, String, List, and Function each implement the same set of operator methods (add, subtract, multiply, divide, comparisons), and the interpreter dispatches to whichever method the operand type defines. Because List implements the same interface, list operations reuse arithmetic syntax: `+` appends, `-` removes by index, `*` concatenates two lists, and `/` indexes into a list — behavior that emerges from generic dispatch rather than special-casing.
 
-Python for the interpreter. FastAPI for execution. React for the bench.
+## Functions and scoping
+
+Function calls create a new interpreter and context whose parent scope is the function's defining context, not the caller's — verified by testing that a closure returns the variable value from where it was defined rather than a shadowing variable at the call site, confirming lexical (not dynamic) scoping. Because each interpreted call recurses through several layers of Python function calls, recursion depth in Silly is capped at roughly 123 levels under Python's default recursion limit.
+
+## Built-ins
+
+A BuiltInFunction class supplies core library functions (print, input, type checks, list mutation, length), each dispatched by name lookup, making new built-ins addable without touching the parser. A RUN built-in lets one script load and execute another.
+
+## Testing note
+
+Direct execution of the interpreter — not just code review — surfaced a genuine bug: the single-line form of WHILE crashes due to a method-name typo, while the equivalent single-line FOR loop works correctly. The codebase's structure (class names, error-wrapper pattern, file organization) closely follows a well-known interpreter-building tutorial lineage, extended with independent testing and verification of its actual runtime behavior.
