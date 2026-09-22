@@ -5,9 +5,9 @@
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
   --color-paper: #f9f7ee;
   --color-paper-deep: #f0ede0;
-  --color-ink: #484ab3;
-  --color-ink-soft: color-mix(in srgb, #484ab3 72%, #f9f7ee);
-  --color-rule: color-mix(in srgb, #484ab3 18%, #f9f7ee);
+  --color-ink: #67456f;
+  --color-ink-soft: color-mix(in srgb, #67456f 72%, #f9f7ee);
+  --color-rule: color-mix(in srgb, #67456f 18%, #f9f7ee);
   --color-accent: #2b2e3a;
 }
 
@@ -89,6 +89,40 @@ a {
   text-transform: uppercase;
 }
 
+/* Mobile nav drawer */
+.nav-toggle {
+  appearance: none;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.25rem;
+}
+
+.nav-drawer {
+  display: none;
+}
+
+.nav-drawer[data-open="true"] {
+  display: block;
+}
+
+.nav-drawer__panel {
+  animation: nav-slide 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes nav-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;
@@ -127,7 +161,8 @@ a {
     scroll-behavior: auto !important;
   }
 
-  .rise {
+  .rise,
+  .nav-drawer__panel {
     animation: none;
   }
 

@@ -2,16 +2,16 @@
 import { site } from "../site";
 
 const path = Astro.url.pathname;
+const onWork = path.startsWith("/work");
 ---
 
 <header class="border-b border-rule">
-  <div class="mx-auto flex max-w-3xl items-baseline justify-between gap-6 px-6 py-5 md:px-8">
+  <div class="mx-auto flex max-w-3xl items-center justify-between gap-6 px-6 py-5 md:items-baseline md:px-8">
     <a
       href="/"
       class="inline-flex items-center gap-2 font-display text-[1.15rem] font-bold tracking-tight text-ink link-fade"
       aria-label="T.P. home"
     >
-      <!-- Monochrome laptop mark (currentColor) -->
       <svg
         class="icon-mono text-[1.05em]"
         viewBox="0 0 24 24"
@@ -28,16 +28,119 @@ const path = Astro.url.pathname;
       </svg>
       <span>T.P.</span>
     </a>
-    <nav aria-label="Primary" class="flex flex-wrap items-baseline gap-x-5 gap-y-1 text-sm">
-      <a
-        href="/#work"
-        class:list={["link-underline", path.startsWith("/work") && "opacity-60"]}
-      >
-        Work
-      </a>
+
+    <!-- Desktop nav -->
+    <nav
+      aria-label="Primary"
+      class="hidden flex-wrap items-baseline gap-x-5 gap-y-1 text-sm md:flex"
+    >
+      <a href="/#work" class:list={["link-underline", onWork && "opacity-60"]}>Work</a>
       <a href="/#experience" class="link-underline">Experience</a>
       <a href={site.github} rel="me" class="link-underline" target="_blank">GitHub</a>
       <a href={site.linkedin} rel="me" class="link-underline" target="_blank">LinkedIn</a>
     </nav>
+
+    <!-- Mobile: foldable breadcrumb-style slider -->
+    <div class="relative md:hidden">
+      <button
+        type="button"
+        class="nav-toggle inline-flex items-center gap-2 text-sm font-bold"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-nav-toggle
+      >
+        <span class="tracking-wide" data-nav-crumb>Menu</span>
+        <svg
+          class="icon-mono transition-transform duration-200"
+          data-nav-chevron
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </button>
+
+      <div
+        id="mobile-nav"
+        class="nav-drawer absolute right-0 top-full z-50 mt-3 min-w-[12rem] border border-rule bg-paper shadow-sm"
+        data-open="false"
+        hidden
+      >
+        <nav
+          aria-label="Mobile primary"
+          class="nav-drawer__panel flex flex-col divide-y divide-rule text-sm"
+        >
+          <a
+            href="/#work"
+            class:list={[
+              "px-4 py-3 link-fade",
+              onWork && "font-bold text-accent",
+            ]}
+            data-nav-link>Work</a
+          >
+          <a href="/#experience" class="px-4 py-3 link-fade" data-nav-link>Experience</a>
+          <a
+            href={site.github}
+            rel="me"
+            class="px-4 py-3 link-fade"
+            target="_blank"
+            data-nav-link>GitHub</a
+          >
+          <a
+            href={site.linkedin}
+            rel="me"
+            class="px-4 py-3 link-fade"
+            target="_blank"
+            data-nav-link>LinkedIn</a
+          >
+        </nav>
+      </div>
+    </div>
   </div>
 </header>
+
+<script>
+  function initMobileNav() {
+    const toggle = document.querySelector("[data-nav-toggle]");
+    const drawer = document.getElementById("mobile-nav");
+    const crumb = document.querySelector("[data-nav-crumb]");
+    const chevron = document.querySelector("[data-nav-chevron]");
+    if (!(toggle instanceof HTMLElement) || !(drawer instanceof HTMLElement)) return;
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      drawer.dataset.open = String(open);
+      drawer.hidden = !open;
+      if (chevron instanceof HTMLElement) {
+        chevron.style.transform = open ? "rotate(180deg)" : "";
+      }
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(drawer.dataset.open !== "true");
+    });
+
+    drawer.querySelectorAll("[data-nav-link]").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (crumb && link.textContent) crumb.textContent = link.textContent.trim();
+        setOpen(false);
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
+
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (!toggle.contains(target) && !drawer.contains(target)) setOpen(false);
+    });
+  }
+
+  initMobileNav();
+  document.addEventListener("astro:page-load", initMobileNav);
+</script>

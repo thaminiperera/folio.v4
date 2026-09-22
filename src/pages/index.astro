@@ -18,11 +18,13 @@ const projects = (await getCollection("work")).sort((a, b) => a.data.order - b.d
     >
       {site.name}
     </h1>
-    <p class="rise rise-delay-1 mt-5 max-w-xl text-[1.05rem] leading-relaxed text-ink-soft">
+    <p
+      class="rise rise-delay-1 mt-5 max-w-xl text-[14px] font-bold uppercase leading-relaxed tracking-[0.04em] text-ink"
+    >
       {site.tagline}
     </p>
     <p class="rise rise-delay-2 mt-4 max-w-xl leading-relaxed text-ink-soft">
-      {site.role} based in {site.location}
+      {site.locationLine}
     </p>
     <p class="rise rise-delay-3 mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
       <a

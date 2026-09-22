@@ -7,6 +7,7 @@ export const site = {
   github: "https://github.com/thaminiperera",
   githubHandle: "thaminiperera",
   linkedin: "https://www.linkedin.com/in/thaminiperera/",
+  locationLine: "Based in Colombo, Sri Lanka",
   description:
     "Software Engineer, Occasional Researcher, Lifelong scholar. Based in Colombo, Sri Lanka.",
 };

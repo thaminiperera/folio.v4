@@ -4,10 +4,10 @@ import { site } from "../site";
 
 <footer class="mt-24 border-t border-rule">
   <div
-    class="mx-auto flex max-w-3xl flex-col gap-3 px-6 py-10 text-sm text-ink-soft md:flex-row md:items-baseline md:justify-between md:px-8"
+    class="mx-auto flex max-w-3xl flex-col items-center gap-3 px-6 py-10 text-center text-sm text-ink-soft md:flex-row md:items-baseline md:justify-between md:px-8 md:text-left"
   >
     <p>© {new Date().getFullYear()} {site.name}</p>
-    <p class="flex flex-wrap gap-x-5 gap-y-1">
+    <p class="flex flex-wrap justify-center gap-x-5 gap-y-1 md:justify-start">
       <a class="link-underline" href={site.github} target="_blank" rel="me">GitHub</a>
       <a class="link-underline" href={site.linkedin} target="_blank" rel="me">LinkedIn</a>
     </p>

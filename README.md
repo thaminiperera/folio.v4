@@ -1,6 +1,10 @@
 # Thamini Perera — folio.v4
 
-Personal portfolio. Astro, MDX, Tailwind.
+Personal portfolio. Made with Astro, MDX, and Tailwind.
+
+Built with assistance from AI agents throughout the development process.
+
+The design and visual direction of the site are heavily inspired by the [About page](https://oak.is/) of OAK.
 
 ## Run
 
@@ -8,11 +12,3 @@ Personal portfolio. Astro, MDX, Tailwind.
 npm install
 npm run dev
 ```
-
-Build: `npm run build`. Deploy the `dist` folder (Netlify is configured).
-
-## Edit
-
-- Identity and experience: `src/site.ts`
-- Project case studies: `src/content/work/*.mdx`
-- Agent-facing summary: `public/llms.txt`
