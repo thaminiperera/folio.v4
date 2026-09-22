@@ -15,6 +15,17 @@ This is a small interpreted programming language implemented from scratch in Pyt
 
 The implementation follows a classic three-stage pipeline: a lexer converts source text into tokens, a parser converts tokens into an abstract syntax tree, and a tree-walking interpreter evaluates that tree directly, without compiling to bytecode.
 
+<figure class="project-figure">
+  <img
+    src="/images/interpreter_pipeline_diagram_mono.png"
+    alt="Interpreter Pipeline Diagram"
+    width="1200"
+    height="800"
+    loading="lazy"
+  />
+  <figcaption>Fig. 1. Interpreter Pipeline</figcaption>
+</figure>
+
 ## Lexer
 
 A single loop switches on each character, producing tokens for numbers (including decimals), identifiers (checked against a keyword list), and manually-parsed strings with escape sequences. Two-character operators use small lookahead routines — distinguishing `=` from `==`, and `-` from the `->` function-return arrow.
@@ -22,6 +33,17 @@ A single loop switches on each character, producing tokens for numbers (includin
 ## Parser
 
 Implemented as hand-written recursive descent, where operator precedence is expressed through the order functions call each other (`expr` → `comp-expr` → `arith-expr` → `term` → `factor` → `power` → `call` → `atom`) rather than a precedence table.
+
+<figure class="project-figure">
+  <img
+    src="/images/interpreter_precedence_chain_diagram_mono.png"
+    alt="Precedence Chain for the Interpreter"
+    width="1200"
+    height="800"
+    loading="lazy"
+  />
+  <figcaption>Fig. 2. Interpreter Precedence Chain</figcaption>
+</figure>
 
 A shared helper handles left-associative binary operators generically, reused across addition, comparisons, and logical operators.
 
