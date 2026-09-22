@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import HoverArrow from "./HoverArrow.astro";
 
 interface Props {
   projects: CollectionEntry<"work">[];
@@ -28,8 +29,9 @@ const { projects } = Astro.props;
               </p>
               <p class="mt-3 text-sm text-ink-soft">{project.data.stack.join(" · ")}</p>
             </div>
-            <span class="link-underline self-start text-sm font-bold md:mt-1 md:font-normal">
-              View
+            <span class="inline-flex items-center gap-1.5 self-start text-sm font-bold md:mt-1 md:font-normal">
+              <span class="link-underline">View</span>
+              <HoverArrow />
             </span>
           </a>
         </li>

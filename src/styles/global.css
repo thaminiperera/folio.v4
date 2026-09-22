@@ -81,6 +81,43 @@ a {
   color: currentColor;
 }
 
+/* Grey faded NE → east arrow on link hover */
+.hover-arrow {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.85em;
+  height: 0.85em;
+  color: var(--color-ink);
+  opacity: 0.38;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+  vertical-align: -0.05em;
+}
+
+.group:hover .hover-arrow,
+.group:focus-within .hover-arrow,
+.hover-arrow-link:hover .hover-arrow,
+.hover-arrow-link:focus-visible .hover-arrow,
+.hover-arrow-link:focus-within .hover-arrow {
+  transform: rotate(0deg);
+  opacity: 0.55;
+}
+
+.hover-arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-arrow {
+    transition: none;
+  }
+}
+
 .label {
   font-family: var(--font-mono);
   font-weight: 700;

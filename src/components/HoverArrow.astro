@@ -1,0 +1,22 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<svg
+  class:list={["hover-arrow", className]}
+  viewBox="0 0 16 16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="square"
+  stroke-linejoin="miter"
+  aria-hidden="true"
+>
+  <!-- East-facing arrow; CSS rotates to NE by default -->
+  <path d="M3 8h9"></path>
+  <path d="M8.5 3.5L13 8l-4.5 4.5"></path>
+</svg>

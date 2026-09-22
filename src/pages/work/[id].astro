@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Footer from "../../components/Footer.astro";
 import Header from "../../components/Header.astro";
+import HoverArrow from "../../components/HoverArrow.astro";
 import Base from "../../layouts/Base.astro";
 
 export async function getStaticPaths() {
@@ -35,18 +36,25 @@ const { Content } = await render(project);
     </p>
     <p class="mt-6 text-sm text-ink-soft">{project.data.stack.join(" · ")}</p>
     <p class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-      <a class="link-underline" href={project.data.github} target="_blank" rel="noopener noreferrer">
-        GitHub
+      <a
+        class="hover-arrow-link link-underline"
+        href={project.data.github}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>GitHub</span>
+        <HoverArrow />
       </a>
       {
         project.data.demo && (
           <a
-            class="link-underline"
+            class="hover-arrow-link link-underline"
             href={project.data.demo}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Live Demo
+            <span>Live Demo</span>
+            <HoverArrow />
           </a>
         )
       }
@@ -59,10 +67,10 @@ const { Content } = await render(project);
     </article>
 
     <p class="mt-16 border-t border-rule pt-8 text-sm">
-      <a class="link-fade text-ink-soft" href={`/work/${next.id}`}>
+      <a class="hover-arrow-link text-ink-soft" href={`/work/${next.id}`}>
         <strong class="font-bold text-ink">Next:</strong>
-        {" "}
-        {next.data.title}
+        <span class="link-underline">{next.data.title}</span>
+        <HoverArrow />
       </a>
     </p>
   </main>
