@@ -21,8 +21,19 @@ The build splits responsibility across four services:
 
 - TipTap handles the rich-text editor itself.
 - Liveblocks manages live sync (document content, cursors, comments, notifications).
-- Convex stores document metadata (title, owner, organization). 
-- Clerk manages identity and sessions. 
+- Convex stores document metadata (title, owner, organization).
+- Clerk manages identity and sessions.
+
+<figure class="project-figure">
+  <img
+    src="/images/docs_architecture_diagram_mono.png"
+    alt="Architecture diagram of Docs: TipTap, Liveblocks, Convex, and Clerk"
+    width="1200"
+    height="800"
+    loading="lazy"
+  />
+  <figcaption>Fig. 1. Architecture Diagram</figcaption>
+</figure>
 
 The connecting design choice is that the Convex document ID doubles as the Liveblocks room ID — Convex never stores document content, only the pointer to where it lives.
 
@@ -49,6 +60,17 @@ Comments anchor to selected text, rendering as margin threads on desktop and flo
 ## Security
 
 Security runs through a single auth handshake: before joining a room, the browser calls a Liveblocks-auth route that verifies the Clerk session, looks up the document in Convex by room ID, and checks that the user is either the owner or a member of the document's organization before issuing a scoped, room-only Liveblocks token. The same ownership check is repeated server-side in Convex mutations, so client-side UI restrictions are never the only protection.
+
+<figure class="project-figure">
+  <img
+    src="/images/docs_auth_handshake_diagram_mono.png"
+    alt="Auth handshake diagram for Docs Liveblocks room access"
+    width="1200"
+    height="800"
+    loading="lazy"
+  />
+  <figcaption>Fig. 2. Auth Handshake</figcaption>
+</figure>
 
 ## Data and polish
 
