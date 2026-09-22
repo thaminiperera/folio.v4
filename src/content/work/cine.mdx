@@ -9,7 +9,6 @@ stack:
   - Postgres (Neon)
   - Mux
   - Clerk
-  - Upstash
   - UploadThing
 github: https://github.com/thaminiperera/cine
 demo: https://cine-blue.vercel.app/
@@ -18,28 +17,42 @@ order: 2
 
 ## Overview
 
-Cine is a video-sharing platform with uploads, real transcoding, a creator studio, subscriptions, likes, threaded comments, playlists, search, trending, and per-user channels. Backend logic runs through tRPC — typed procedures validated with Zod, replacing REST or GraphQL — with a shared context that reads the Clerk session, resolves the corresponding Postgres user, and applies an Upstash-backed rate limit (10 requests per 10 seconds) before any protected procedure executes.
+Cine is a video-sharing platform with uploads, real transcoding, a creator studio, subscriptions, likes, threaded comments, playlists, search, trending, and per-user channels. 
+
+Backend logic runs through tRPC — typed procedures validated with Zod, replacing REST or GraphQL — with a shared context that reads the Clerk session, resolves the corresponding Postgres user, and applies an Upstash-backed rate limit (10 requests per 10 seconds) before any protected procedure executes.
 
 ## Upload pipeline
 
-Creating a video first inserts a placeholder Postgres row and requests a direct upload URL from Mux; the file is uploaded straight from the browser to Mux, never touching the server. Mux processes the file asynchronously and reports progress through webhooks (`created`, `ready`, `errored`, `track.ready` for subtitles), each matched back to the placeholder row by upload ID and signature-verified. On the ready event, Mux's temporary thumbnail and animated-preview URLs are downloaded and re-uploaded to UploadThing for permanent storage before being saved to the database.
+Creating a video first inserts a placeholder Postgres row and requests a direct upload URL from Mux; the file is uploaded straight from the browser to Mux, never touching the server. Mux processes the file asynchronously and reports progress through webhooks (`created`, `ready`, `errored`, `track.ready` for subtitles), each matched back to the placeholder row by upload ID and signature-verified. 
+
+On the ready event, Mux's temporary thumbnail and animated-preview URLs are downloaded and re-uploaded to UploadThing for permanent storage before being saved to the database.
 
 ## Studio
 
-The video-edit form binds directly to a Drizzle-generated Zod schema, keeping form validation and database schema in sync. Additional actions include restoring an auto-generated thumbnail, revalidating a stuck upload against Mux, and replacing thumbnails via a separate UploadThing dropzone. A scaffolded Upstash Workflow route intended for AI-generated titles exists but is currently only a stub.
+The video-edit form binds directly to a Drizzle-generated Zod schema, keeping form validation and database schema in sync. 
+
+Additional actions include restoring an auto-generated thumbnail, revalidating a stuck upload against Mux, and replacing thumbnails via a separate UploadThing dropzone.
 
 ## Feeds and pagination
 
-Every list (home feed, search, comments, playlists) uses cursor-based pagination — fetching one extra row past the limit to determine whether more pages exist, ordered by a composite key (typically `updatedAt` + `id`, or view count for trending) to avoid ties. View, like, and dislike counts are computed inline as correlated subqueries rather than stored as denormalized counters. Infinite scroll is driven by an intersection observer watching a sentinel element, with a manual "Load More" fallback for less time-sensitive lists like replies.
+Every list (home feed, search, comments, playlists) uses cursor-based pagination — fetching one extra row past the limit to determine whether more pages exist, ordered by a composite key (typically `updatedAt` + `id`, or view count for trending) to avoid ties. 
+
+View, like, and dislike counts are computed inline as correlated subqueries rather than stored as denormalized counters. 
+
+Infinite scroll is driven by an intersection observer watching a sentinel element, with a manual "Load More" fallback for less time-sensitive lists like replies.
 
 ## Engagement
 
-Likes, dislikes, and subscriptions follow a consistent toggle pattern — check for an existing row, delete it if present, otherwise insert — with like/dislike switching handled by a single upsert against a composite primary key. Comments support exactly one level of nested replies, enforced by a runtime check rejecting replies to a reply; reply counts are computed via a Postgres CTE joined against top-level comments to avoid extra queries.
+Likes, dislikes, and subscriptions follow a consistent toggle pattern — check for an existing row, delete it if present, otherwise insert — with like/dislike switching handled by a single upsert against a composite primary key. 
+
+Comments support exactly one level of nested replies, enforced by a runtime check rejecting replies to a reply; reply counts are computed via a Postgres CTE joined against top-level comments to avoid extra queries.
 
 ## Search and playlists
 
-Search combines a case-insensitive title match with optional category filtering; trending reorders the same query by view count instead of recency. Playlists, liked videos, and watch history are all derived from a single join table (`playlistVideos`) or reaction/view tables, sorted by their respective timestamps, rather than requiring separate schemas.
+Search combines a case-insensitive title match with optional category filtering; trending reorders the same query by view count instead of recency. 
+
+Playlists, liked videos, and watch history are all derived from a single join table (`playlistVideos`) or reaction/view tables, sorted by their respective timestamps, rather than requiring separate schemas.
 
 ## Known gaps
 
-The AI title-generation workflow is unbuilt, view counts have no time-based dedupe for rewatches, there's no moderation/reporting layer, and video visibility (private) isn't currently enforced on the single-video fetch endpoint.
+View counts have no time-based dedupe for rewatches, there's no moderation/reporting layer, and video visibility (private) isn't currently enforced on the single-video fetch endpoint.

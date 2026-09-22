@@ -11,7 +11,9 @@ order: 3
 
 ## Overview
 
-This is a small interpreted programming language implemented from scratch in Python, covering variables, conditionals, loops, first-class functions (named, anonymous, recursive), lists, strings, and an interactive REPL. The implementation follows a classic three-stage pipeline: a lexer converts source text into tokens, a parser converts tokens into an abstract syntax tree, and a tree-walking interpreter evaluates that tree directly, without compiling to bytecode.
+This is a small interpreted programming language implemented from scratch in Python, covering variables, conditionals, loops, first-class functions (named, anonymous, recursive), lists, strings, and an interactive REPL.
+
+The implementation follows a classic three-stage pipeline: a lexer converts source text into tokens, a parser converts tokens into an abstract syntax tree, and a tree-walking interpreter evaluates that tree directly, without compiling to bytecode.
 
 ## Lexer
 
@@ -19,24 +21,28 @@ A single loop switches on each character, producing tokens for numbers (includin
 
 ## Parser
 
-Implemented as hand-written recursive descent, where operator precedence is expressed through the order functions call each other (`expr` → `comp-expr` → `arith-expr` → `term` → `factor` → `power` → `call` → `atom`) rather than a precedence table. A shared helper handles left-associative binary operators generically, reused across addition, comparisons, and logical operators. Exponentiation is implemented as right-associative by recursing back into a lower precedence level, confirmed by testing that `2 ^ 3 ^ 2` evaluates to 512 rather than 64.
+Implemented as hand-written recursive descent, where operator precedence is expressed through the order functions call each other (`expr` → `comp-expr` → `arith-expr` → `term` → `factor` → `power` → `call` → `atom`) rather than a precedence table.
+
+A shared helper handles left-associative binary operators generically, reused across addition, comparisons, and logical operators.
+
+Exponentiation is implemented as right-associative by recursing back into a lower precedence level, confirmed by testing that `2 ^ 3 ^ 2` evaluates to 512 rather than 64.
 
 ## Design choices
 
-Every construct — including if, loops, and variable assignment — is parsed as an expression that produces a value; a for loop, for instance, returns a list of its per-iteration results unless explicitly suppressed. Errors are returned as values through result-wrapper objects rather than raised as exceptions, allowing every failure to carry its exact source position and be rendered with a caret pointing at the offending token.
+Every construct — including if, loops, and variable assignment — is parsed as an expression that produces a value; a for loop, for instance, returns a list of its per-iteration results unless explicitly suppressed.
+
+Errors are returned as values through result-wrapper objects rather than raised as exceptions, allowing every failure to carry its exact source position and be rendered with a caret pointing at the offending token.
 
 ## Values and operator overloading
 
-Number, String, List, and Function each implement the same set of operator methods (add, subtract, multiply, divide, comparisons), and the interpreter dispatches to whichever method the operand type defines. Because List implements the same interface, list operations reuse arithmetic syntax: `+` appends, `-` removes by index, `*` concatenates two lists, and `/` indexes into a list — behavior that emerges from generic dispatch rather than special-casing.
+Number, String, List, and Function each implement the same set of operator methods (add, subtract, multiply, divide, comparisons), and the interpreter dispatches to whichever method the operand type defines.
+
+Because List implements the same interface, list operations reuse arithmetic syntax: `+` appends, `-` removes by index, `*` concatenates two lists, and `/` indexes into a list — behavior that emerges from generic dispatch rather than special-casing.
 
 ## Functions and scoping
 
-Function calls create a new interpreter and context whose parent scope is the function's defining context, not the caller's — verified by testing that a closure returns the variable value from where it was defined rather than a shadowing variable at the call site, confirming lexical (not dynamic) scoping. Because each interpreted call recurses through several layers of Python function calls, recursion depth in Silly is capped at roughly 123 levels under Python's default recursion limit.
+Function calls create a new interpreter and context whose parent scope is the function's defining context, not the caller's — verified by testing that a closure returns the variable value from where it was defined rather than a shadowing variable at the call site, confirming lexical (not dynamic) scoping. Because each interpreted call recurses through several layers of Python function calls, recursion depth in the interpreter is capped at roughly 123 levels under Python's default recursion limit.
 
 ## Built-ins
 
 A BuiltInFunction class supplies core library functions (print, input, type checks, list mutation, length), each dispatched by name lookup, making new built-ins addable without touching the parser. A RUN built-in lets one script load and execute another.
-
-## Testing note
-
-Direct execution of the interpreter — not just code review — surfaced a genuine bug: the single-line form of WHILE crashes due to a method-name typo, while the equivalent single-line FOR loop works correctly. The codebase's structure (class names, error-wrapper pattern, file organization) closely follows a well-known interpreter-building tutorial lineage, extended with independent testing and verification of its actual runtime behavior.

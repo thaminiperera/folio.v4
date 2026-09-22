@@ -50,9 +50,6 @@ const { Content } = await render(project);
           </a>
         )
       }
-      <a class="link-fade text-ink-soft" href={`/work/${next.id}`}>
-        Next: {next.data.title}
-      </a>
     </p>
 
     <article
@@ -60,6 +57,14 @@ const { Content } = await render(project);
     >
       <Content />
     </article>
+
+    <p class="mt-16 border-t border-rule pt-8 text-sm">
+      <a class="link-fade text-ink-soft" href={`/work/${next.id}`}>
+        <strong class="font-bold text-ink">Next:</strong>
+        {" "}
+        {next.data.title}
+      </a>
+    </p>
   </main>
   <Footer />
 </Base>
